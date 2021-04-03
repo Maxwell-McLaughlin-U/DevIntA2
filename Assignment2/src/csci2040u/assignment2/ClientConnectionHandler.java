@@ -2,6 +2,7 @@ package csci2040u.assignment2;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.NoSuchElementException;
 import java.util.Date;
@@ -20,58 +21,66 @@ public class ClientConnectionHandler implements Runnable{
 
 
     public void run(){
-        String  line = null;
-        try{
-            line = requestInput.readLine();
-            handleRequest(line);
-        }catch(IOException e){
-            e.printStackTrace();
-        }finally{
-            try{
-                requestInput.close();
-                responseOutput.close();
-                socket.close();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-        }
+        //System.out.println("hello");
+        try {
+            String[] strRequest = requestInput.readLine().split(" ");
+            String[] strHost = requestInput.readLine().split(" ");
+            System.out.println(strRequest[1]);
+            System.out.println(strHost[1]);
 
-    }
 
-    public void handleRequest(String request) throws IOException{
-        try{
-            StringTokenizer tokenizer = new StringTokenizer(request);
-            String command = tokenizer.nextToken();
-            String uri = tokenizer.nextToken();
+            if(strRequest[0].equals("GET")){
+                //System.out.println("debug: bear");
 
-            if (command.equalsIgnoreCase("GET") || command.equalsIgnoreCase("POST")){
-                File baseDir = new File("www");
-                sendFile(baseDir, uri);
-            }else{
-                sendError(405, "Method Not Allowed", "You cannot use the '" + command + "' command on this server.");
+                sendFile(strRequest[1]);
+            }else if(strRequest[0].equals("UPL")){
+                //System.out.println("debug: dog");
+                //System.out.println(requestInput.readLine());
+                //System.out.println(requestInput.readLine());
+                upload(strRequest[1]);
             }
 
-        }catch(NoSuchElementException e){
+
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void sendFile(File baseDir, String uri) throws IOException {
-        File file = new File(baseDir, uri);
+    public void upload(String fileName) throws IOException {
+        System.out.println("debug: monkey");
+        System.out.println(fileName);
+        //String line = requestInput.readLine();
+        //System.out.println("123" + line + "123");
+        FileWriter upWriter = new FileWriter("src\\csci2040u\\assignment2\\ServerFolder\\" + fileName);
+        String line;
 
-        if (!file.exists()) {
-            sendError(404, "Not Found", "The file '" + uri + "' could not be located.");
+        while ((line = requestInput.readLine()) != null){
+            //System.out.println("debug: rabbit");
+            System.out.println(line);
 
-        } else {
+            upWriter.write(line + "\n");
 
-            String contentType = getContentType(file.getName());
-            byte[] content = new byte[(int)file.length()];
-            FileInputStream fileIn = new FileInputStream(file);
-            fileIn.read(content);
-            fileIn.close();
-            sendResponse("HTTP/1.1 200 Ok\r\n", contentType, content);
+
         }
+
+
+        upWriter.close();
+    }
+
+    public void sendFile(String target) throws IOException {
+        File file = new File("src\\csci2040u\\assignment2\\ServerFolder\\" + target);
+        System.out.println("debug: flamingo");
+        System.out.println(file.exists());
+
+        String contentType = getContentType(file.getName());
+        byte[] content = new byte[(int)file.length()];
+        FileInputStream fileIn = new FileInputStream(file);
+        fileIn.read(content);
+        fileIn.close();
+        sendGetResponse("HTTP/1.1 200 Ok\r\n", contentType, content);
+
     }
 
     private String getContentType(String filename) {
@@ -92,7 +101,7 @@ public class ClientConnectionHandler implements Runnable{
         }
     }
 
-    private void sendResponse(String responseCode, String contentType, byte[] content) throws IOException {
+    private void sendGetResponse(String responseCode, String contentType, byte[] content) throws IOException {
         responseOutput.writeBytes(responseCode);
 
         responseOutput.writeBytes("Content-Type: " + contentType + "\r\n");
@@ -100,26 +109,14 @@ public class ClientConnectionHandler implements Runnable{
         responseOutput.writeBytes("Server: Simple-Http-Server v1.0.0\r\n");
         responseOutput.writeBytes("Content-Length: " + content.length + "\r\n");
         responseOutput.writeBytes("Connection: Close\r\n\r\n");
-
+        responseOutput.writeBytes("file contents:\n");
         responseOutput.write(content);
+
+        responseOutput.writeBytes("\r\n\r\n");
+
         responseOutput.flush();
+        responseOutput.close();
+        socket.close();
     }
 
-
-    private void sendError(int errorCode,
-                           String errorMessage,
-                           String description) throws IOException {
-        String responseCode = "HTTP/1.1 " + errorCode + " " + errorMessage + "\r\n";
-        String content =  "<!DOCTYPE html>" +
-                "<html>" +
-                "  <head>" +
-                "    <title>" + errorCode + ": " + errorMessage + "</title>" +
-                "  </head>" +
-                "  <body>" +
-                "    <h1>" + errorCode + ": " + errorMessage + "</h1>" +
-                "    <p>" + description + "</p>" +
-                "  </body>" +
-                "</html>";
-        sendResponse(responseCode, "text/html", content.getBytes());
-    }
 }
