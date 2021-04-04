@@ -16,6 +16,7 @@ Image of Application
 
 
 Improvements
+
 We added an image to the JavaFx GUI. We also made the first cell of the List View a different colour to outline as a title. 
 
 How to Run: Step-by-Step
