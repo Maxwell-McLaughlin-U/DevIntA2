@@ -26,11 +26,10 @@ How to Run: Step-by-Step
 8. Open IntelliJ or any other Java supported IDE. 
 
 Instructions for Intelli J:
-
-Go to File/Open
-Choose the Assignment2 folder that you cloned onto your computer.
-Go to Server.java located in src/csci2040u.assignment2 and right click on the Java file and press _Run 'Server.main()'_
-Go to ClientServer.java which is located in src/csci2040u.assignment2 and right click on the Java file and press _Run 'Server.main()'_
+- Go to File/Open
+- Choose the Assignment2 folder that you cloned onto your computer.
+- Go to Server.java located in src/csci2040u.assignment2 and right click on the Java file and press _Run 'Server.main()'_
+- Go to ClientServer.java which is located in src/csci2040u.assignment2 and right click on the Java file and press _Run 'Server.main()'_
 
 Other resources
 [1] https://www.rgagnon.com/javadetails/java-0542.html - Used to figure out how to read characters of a file through the network and write out to a file.
