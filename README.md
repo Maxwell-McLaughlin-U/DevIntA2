@@ -3,6 +3,7 @@
 Group Members:
 
 -Maxwell McLaughlin (10075133)
+
 -Soumia Umaputhiran (100744669)
 
 Project Information
