@@ -2,9 +2,7 @@
 
 Group Members:
 
--Maxwell McLaughlin (10075133)
-
--Soumia Umaputhiran (100744669)
+-Maxwell McLaughlin (10075133)<br />Soumia Umaputhiran (100744669)
 
 Project Information
 To create a file sharing JavaFx application where clients can connect to a server to upload and download files from a central server. The central server is multithreaded and a socket is open until an event has been handled. The instructions of this assignment reads "The file sharing clients will connect to a central server, which will respond to a single client command, and then disconnect. Each time the client needs to issue another command, it will reconnect before sending the command. The server will respond to the following commands: DIR, UPLOAD, DOWNLOAD.
