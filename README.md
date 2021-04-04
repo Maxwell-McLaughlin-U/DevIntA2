@@ -11,6 +11,10 @@ The client side will have a simple user interface that displays the list of file
 
 Image of Application
 
+
+<img width="425" alt="CSCI2020U Assignment2 Image" src="https://user-images.githubusercontent.com/60481370/113497615-c9d32380-94d3-11eb-8935-76374f3c0edc.png">
+
+
 Improvements
 We added an image to the JavaFx GUI. We also made the first cell of the List View a different colour to outline as a title. 
 
